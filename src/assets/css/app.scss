@@ -6,31 +6,31 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background-color: #444;
-  }
-  &::-webkit-scrollbar-track-piece {
-    background-color: #000;
-  }
+}
+#app::-webkit-scrollbar {
+  width: 10px;
+}
+#app::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: #444;
+}
+#app::-webkit-scrollbar-track-piece {
+  background-color: #000;
 }
 .body {
-  margin-top: 56px;
+  margin-top: 50px;
 }
 .loading {
-    width: 0.6em;
-    display: block;
-    overflow: hidden;
-    animation: dot 1.5s infinite step-end;
+  width: 0.6em;
+  display: block;
+  overflow: hidden;
+  animation: dot 1.5s infinite step-end;
 }
 @keyframes dot {
-    33% {
-      width: 1.3em;
-    }
-    66% {
-      width: 2em;
-    }
+  33% {
+    width: 1.3em;
+  }
+  66% {
+    width: 2em;
+  }
 }

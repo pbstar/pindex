@@ -2,75 +2,84 @@
   <div class="box">
     <div class="label">
       <span>PS C:\</span>
-      <span v-show="type==1">fanyi\</span>
-      <span style="margin-right: 6px;">></span>
-      <span class="active">{{cmd}}</span>
+      <span v-show="type == 1">fanyi\</span>
+      <span style="margin-right: 6px">></span>
+      <span class="active">{{ cmd }}</span>
     </div>
-    <div class="input"
-         :class="isFocus?'inputActive':''"
-         ref="input"
-         contenteditable="true"
-         @compositionstart="isInput=true"
-         @compositionend="isInput=false"
-         @keydown.enter.exact="submit"
-         @input="change"
-         @focus="isFocus=true"
-         @blur="isFocus=false">
-    </div>
+    <div
+      class="input"
+      :class="isFocus ? 'inputActive' : ''"
+      ref="input"
+      contenteditable="true"
+      @compositionstart="isInput = true"
+      @compositionend="isInput = false"
+      @keydown.enter.exact="submit"
+      @input="change"
+      @focus="isFocus = true"
+      @blur="isFocus = false"
+    ></div>
   </div>
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       isFocus: false,
-      list: ['cd', 'cd..', 'help'],
-      cmd: '',
-      isInput: false
+      list: ["cd", "cd..", "help"],
+      cmd: "",
+      isInput: false,
     };
   },
   props: {
     type: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   methods: {
-    submit (e) {
+    submit(e) {
       if (window.event) {
-        window.event.returnValue = false
+        window.event.returnValue = false;
       } else {
-        e.preventDefault()
+        e.preventDefault();
       }
-      this.$emit("submit", { cmd: this.cmd, text: this.$refs.input.innerHTML.replace(/<[^>]+>/g, '') });
-      this.cmd = ''
+      this.$emit("submit", {
+        cmd: this.cmd,
+        text: this.$refs.input.innerHTML.replace(/<[^>]+>/g, ""),
+      });
+      this.cmd = "";
       this.$refs.input.innerHTML = "";
     },
-    change () {
+    change() {
       setTimeout(() => {
-        if (this.isInput) return
-        this.$refs.input.focus()
-        document.execCommand('selectAll', false, null);
+        if (this.isInput) return;
+        this.$refs.input.focus();
+        document.execCommand("selectAll", false, null);
         document.getSelection().collapseToEnd();
-        let str = this.cmd + this.$refs.input.innerHTML.replace(/<[^>]+>/g, '')
+        let str = this.cmd + this.$refs.input.innerHTML.replace(/<[^>]+>/g, "");
         for (let i = 0; i < this.list.length; i++) {
           if (this.list[i].indexOf(str) >= 0) {
-            this.cmd = str
-            this.$refs.input.innerHTML = ''
-            return
+            this.cmd = str;
+            this.$refs.input.innerHTML = "";
+            return;
           }
         }
-        if (this.cmd && this.$refs.input.innerHTML.indexOf('&nbsp;') < 0) {
-          this.cmd = ''
-          this.$refs.input.innerHTML = str
+        if (this.cmd && this.$refs.input.innerHTML.indexOf("&nbsp;") < 0) {
+          this.cmd = "";
+          this.$refs.input.innerHTML = str;
         }
-      }, 5)
+      }, 5);
     },
-    todel () {
-      if (this.$refs.input.innerHTML.replace(/<[^>]+>/g, '') == '') {
-        this.cmd = ''
+    todel() {
+      if (this.$refs.input.innerHTML.replace(/<[^>]+>/g, "") == "") {
+        this.cmd = "";
       }
-    }
+    },
+    tofocus() {
+      this.$nextTick(() => {
+        this.$refs.input.focus();
+      });
+    },
   },
 };
 </script>
