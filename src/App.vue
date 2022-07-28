@@ -2,13 +2,21 @@
   <div id="app">
     <p_header />
     <div class="body">
-      <div class="item" v-for="(item, index) in list" :key="index">
-        <p_added :text="item.q" />
-        <span>{{ item.a }}</span>
+      <div class="item"
+           v-for="(item, index) in list"
+           :key="index">
+        <p_added :text="item.q"
+                 :cmd="item.cmd"
+                 :type="item.type" />
+        <span v-show="!(isloading&&index==list.length-1)">{{ item.a }}</span>
       </div>
     </div>
-    <div class="loading" v-show="isloading">...</div>
-    <p_add v-show="!isloading" @submit="submit" />
+    <div class="loading"
+         v-show="isloading">...</div>
+    <p_add v-show="!isloading"
+           ref="p_add"
+           :type="type"
+           @submit="submit" />
   </div>
 </template>
 
@@ -22,66 +30,129 @@ export default {
     p_add,
     p_added,
   },
-  data() {
+  data () {
     return {
       list: [],
       isloading: false,
+      type: 0,
+    };
+  },
+  mounted () {
+    document.oncontextmenu = () => {
+      return false;
+    };
+    document.onkeydown = () => {
+      var e = window.event || arguments[0];
+      if (e.keyCode == 123) {
+        // f12
+        return false;
+      } else if (e.ctrlKey && e.keyCode == 85) {
+        // ctrl+u
+        return false;
+      } else if (e.ctrlKey && e.keyCode == 83) {
+        // ctrl+s
+        return false;
+      } else if (e.ctrlKey && e.keyCode == 67) {
+        if (this.list.length > 0 && this.isloading) {
+          this.list[(this.list.length - 1)].a = '中断'
+          this.isloading = false
+        }
+      } else if (e.ctrlKey && e.keyCode == 76) {
+        this.isloading = false
+        this.list = []
+      } else if (e.keyCode == 8) {
+        this.$refs.p_add.todel()
+      }
     };
   },
   methods: {
-    submit(e) {
-      if (e) {
+    submit (e) {
+      if (e.text || e.cmd) {
         this.isloading = true;
-        // this.list.push({
-        //   q: e,
-        //   a: "no",
-        // });
+        if (this.type == 0) {
+          this.toType0(e)
+        } else {
+          if (this.type == 1) {
+            this.toType1(e)
+          }
+        }
       } else {
         this.list.push({
-          q: e,
+          q: e.text,
+          cmd: e.cmd,
+          type: this.type,
           a: "",
         });
       }
     },
+    toType0 (e) {
+      if (e.cmd) {
+        if (e.cmd == 'cd') {
+          if (e.text == '&nbsp;fanyi') {
+            this.list.push({
+              q: e.text,
+              cmd: e.cmd,
+              type: this.type,
+              a: "",
+            });
+            this.type = 1
+          } else {
+            this.list.push({
+              q: e.text,
+              cmd: e.cmd,
+              type: this.type,
+              a: "no fond",
+            });
+          }
+          this.isloading = false;
+        }
+      } else {
+        this.list.push({
+          q: e.text,
+          cmd: e.cmd,
+          type: this.type,
+          a: "",
+        });
+      }
+    },
+    toType1 (e) {
+      if (e.cmd) {
+        if (e.cmd == 'cd..') {
+          this.list.push({
+            q: e.text,
+            cmd: e.cmd,
+            type: this.type,
+            a: "",
+          });
+          this.type = 0
+          this.isloading = false;
+        }
+      } else {
+        this.list.push({
+          q: e.text,
+          cmd: e.cmd,
+          type: this.type,
+          a: "",
+        });
+        this.$http.get('https://api.muxiaoguo.cn/api/baidufy', {
+          content: e.text,
+          from: 'zh',
+          to: 'en',
+          APP_ID: '20220728001285904',
+          SEC_KEY: 'ybpkoC_rhQ3fRABGkhXx'
+        }).then(res => {
+          if (res.code == 200) {
+            if (this.list.length > 0 && this.isloading) {
+              this.list[(this.list.length - 1)].a = res.data.dst
+              this.isloading = false
+            }
+          }
+        })
+      }
+    }
   },
 };
 </script>
-
-<style lang="scss" scoped>
-#app {
-  height: 100%;
-  background-color: #000;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 10px; //对垂直方向滚动条
-  }
-  //滚动的滑块
-  &::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background-color: #444//滚动条的颜色;
-  }
-  //内层滚动槽
-  &::-webkit-scrollbar-track-piece {
-    background-color: #000;
-  }
-}
-.body {
-  margin-top: 56px;
-}
-.loading {
-  width: 0.6em;
-  display: block;
-  overflow: hidden;
-  animation: dot 2s infinite step-end;
-}
-@keyframes dot {
-  33% {
-    width: 1.3em;
-  }
-  66% {
-    width: 2em;
-  }
-}
+<style scoped>
+@import "./assets/css/app.scss";
 </style>

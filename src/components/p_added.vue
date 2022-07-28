@@ -1,7 +1,12 @@
 <template>
   <div class="box">
-    <span>PS C:\></span>
-    <span style="margin-left: 10px">{{ text }}</span>
+    <div class="label">
+      <span>PS C:\</span>
+      <span v-show="type==1">fanyi\</span>
+      <span style="margin-right: 6px;">></span>
+      <span class="active">{{cmd}}</span>
+    </div>
+    <div v-html="text"></div>
   </div>
 </template>
 <script>
@@ -11,6 +16,14 @@ export default {
       type: String,
       default: "",
     },
+    cmd: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: Number,
+      default: 0
+    }
   },
 };
 </script>
@@ -18,5 +31,11 @@ export default {
 .box {
   display: flex;
   align-items: center;
+  .label {
+    float: left;
+    .active {
+      color: #28bfff;
+    }
+  }
 }
 </style>
