@@ -13,7 +13,7 @@
 export default {
   data() {
     return {
-      time: "",
+      time: "...",
       timer: "",
     };
   },
@@ -71,7 +71,7 @@ export default {
   }
   .time {
     position: absolute;
-    top: 68px;
+    top: 70px;
     right: 20px;
     color: #666;
   }
