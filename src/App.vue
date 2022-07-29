@@ -2,6 +2,9 @@
   <div id="app">
     <p_header />
     <div class="body">
+      <div :class="type == 0 ? 'toptext1' : 'toptext2'">
+        Welcome to PINDEX,please use 'help'.
+      </div>
       <div class="item" v-for="(item, index) in list" :key="index">
         <p_added
           :text="item.q"
@@ -115,6 +118,15 @@ export default {
             } else {
               this.toNofind(e);
             }
+          } else if (e.cmd == "help") {
+            this.list.push({
+              q: e.text,
+              cmd: e.cmd,
+              type: this.type,
+              a: "",
+              atype: 999,
+            });
+            this.isloading = false;
           }
         } else {
           this.toNofind(e);
