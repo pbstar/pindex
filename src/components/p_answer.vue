@@ -10,7 +10,11 @@
       <p>Command line</p>
       <div v-for="(item, index) in cmdList" :key="index">
         <p>/{{ item.name }}</p>
-        <div v-for="(items, indexs) in item.list" :key="indexs + 's'">
+        <div
+          class="btr"
+          v-for="(items, indexs) in item.list"
+          :key="indexs + 's'"
+        >
           <div class="btd">
             <span class="active">{{ items.cmd }}</span>
             <span> {{ items.text }}</span>
@@ -22,12 +26,12 @@
       </div>
       <br />
       <p>Shortcut key</p>
-      <div v-for="(items, indexs) in keyList" :key="indexs">
+      <div class="btr" v-for="(item, index) in keyList" :key="index + 'a'">
         <div class="btd">
-          <span> {{ items.text }}</span>
+          <span> {{ item.text }}</span>
         </div>
         <div class="btd">
-          <span>{{ items.zhtext }}</span>
+          <span>{{ item.zhtext }}</span>
         </div>
       </div>
     </div>
@@ -142,6 +146,10 @@ export default {
     height: 1px;
     -webkit-transform: scale(1);
     transform: scale(1);
+  }
+  .btr {
+    display: flex;
+    align-items: flex-start;
   }
   .btd {
     display: inline-block;
