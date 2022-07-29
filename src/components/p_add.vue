@@ -2,7 +2,12 @@
   <div class="box">
     <div class="label">
       <span>PS C:\</span>
-      <span v-show="type == 1">fanyi\</span>
+      <span
+        v-for="(item, index) in typeList"
+        :key="index"
+        v-show="type == item.type"
+        >{{ item.text }}\</span
+      >
       <span style="margin-right: 6px">></span>
       <span class="active">{{ cmd }}</span>
     </div>
@@ -25,7 +30,7 @@ export default {
   data() {
     return {
       isFocus: false,
-      list: ["cd", "cd..", "help"],
+      list: [],
       cmd: "",
       isInput: false,
     };
@@ -35,8 +40,36 @@ export default {
       type: Number,
       default: 0,
     },
+    typeList: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
+  },
+  watch: {
+    type: {
+      handler() {
+        this.getCmdList();
+      },
+      deep: true,
+    },
+  },
+  created() {
+    this.getCmdList();
   },
   methods: {
+    getCmdList() {
+      this.$http
+        .get("system/get_cmd_list.php", {
+          type: this.type,
+        })
+        .then((res) => {
+          if (res.code == 200) {
+            this.list = res.data;
+          }
+        });
+    },
     submit(e) {
       if (window.event) {
         window.event.returnValue = false;
