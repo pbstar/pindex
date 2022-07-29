@@ -4,7 +4,9 @@
       <span>PINDEX</span>
     </div>
     <div class="right">
-      <span>X</span>
+      <a href="https://github.com/pbstar/pindex" target="_blank">
+        <img src="../assets/icons/github.png" alt="" />
+      </a>
     </div>
     <div class="time">{{ time }}</div>
   </div>
@@ -68,6 +70,10 @@ export default {
   .left {
     border-bottom: 1px solid #eee;
     line-height: 35px;
+  }
+  .right {
+    display: flex;
+    align-items: center;
   }
   .time {
     position: absolute;
