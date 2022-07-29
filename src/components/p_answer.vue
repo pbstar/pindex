@@ -4,6 +4,7 @@
       <p v-for="(item, index) in text" :key="index">
         <a :href="item.url" target="_blank">{{ item.text }}</a>
       </p>
+      <p v-show="text.length == 0">no list</p>
     </div>
     <p v-else>{{ text }}</p>
   </div>
