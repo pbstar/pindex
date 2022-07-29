@@ -2,7 +2,7 @@
   <div id="app">
     <p_header />
     <div class="body">
-      <div :class="type == 0 ? 'toptext1' : 'toptext2'">
+      <div :class="type == 0 && isFirst ? 'toptext1' : 'toptext2'">
         Welcome to PINDEX,please use 'help'.
       </div>
       <div class="item" v-for="(item, index) in list" :key="index">
@@ -48,6 +48,7 @@ export default {
       isloading: false,
       type: 0,
       typeList: [],
+      isFirst: true,
     };
   },
   created() {
@@ -108,10 +109,12 @@ export default {
         if (e.cmd) {
           if (e.cmd == "cd") {
             if (e.text == "&nbsp;fanyi") {
+              this.isFirst = false;
               this.toNoAns(e);
               this.type = 1;
               this.isloading = false;
             } else if (e.text == "&nbsp;shoucang") {
+              this.isFirst = false;
               this.toNoAns(e);
               this.type = 2;
               this.isloading = false;

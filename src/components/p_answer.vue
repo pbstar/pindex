@@ -10,7 +10,7 @@
       <p>Command line</p>
       <div v-for="(item, index) in cmdList" :key="index">
         <p>/{{ item.name }}</p>
-        <div v-for="(items, indexs) in item.list" :key="indexs">
+        <div v-for="(items, indexs) in item.list" :key="indexs + 's'">
           <div class="btd">
             <span class="active">{{ items.cmd }}</span>
             <span> {{ items.text }}</span>
