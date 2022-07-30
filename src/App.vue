@@ -55,11 +55,12 @@ export default {
     };
   },
   created() {
+    let data = require("./assets/json/index.json");
+    this.typeList = data.typeList;
     let hislist = this.$unit.getLocalStorage("pindex_history_list");
     if (hislist && hislist != JSON.stringify(this.hisList)) {
       this.hisList = JSON.parse(hislist);
     }
-    this.getTypeList();
   },
   mounted() {
     document.oncontextmenu = () => {
@@ -93,13 +94,6 @@ export default {
           this.getHisList(e.keyCode);
         }
       };
-    },
-    getTypeList() {
-      this.$http.get("system/get_type_list.php", {}).then((res) => {
-        if (res.code == 200) {
-          this.typeList = res.data;
-        }
-      });
     },
     getHisList(code) {
       let hislist = this.$unit.getLocalStorage("pindex_history_list");

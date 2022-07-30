@@ -52,82 +52,14 @@ export default {
   },
   data() {
     return {
-      cmdList: [
-        {
-          name: "",
-          list: [
-            {
-              cmd: "help",
-              text: "",
-              zhtext: "帮助",
-            },
-            {
-              cmd: "cd",
-              text: "xx",
-              zhtext: "进入XX项目页",
-            },
-          ],
-        },
-        {
-          name: "fanyi",
-          list: [
-            {
-              cmd: "",
-              text: "xx",
-              zhtext: "将xx翻译为英文",
-            },
-            {
-              cmd: "cd..",
-              text: "",
-              zhtext: "进入根项目页",
-            },
-          ],
-        },
-        {
-          name: "shoucang",
-          list: [
-            {
-              cmd: "list",
-              text: "",
-              zhtext: "获取收藏列表",
-            },
-            {
-              cmd: "add",
-              text: "xxname xxurl",
-              zhtext: "将xxurl以xxname名称加入收藏列表",
-            },
-            {
-              cmd: "del",
-              text: "xxname",
-              zhtext: "将xxname移除收藏列表",
-            },
-            {
-              cmd: "cd..",
-              text: "",
-              zhtext: "进入根项目页",
-            },
-          ],
-        },
-      ],
-      keyList: [
-        {
-          text: "ctrl+c",
-          zhtext: "终结当前运行中的命令",
-        },
-        {
-          text: "ctrl+l",
-          zhtext: "清屏",
-        },
-        {
-          text: "↑",
-          zhtext: "上一条命令",
-        },
-        {
-          text: "↓",
-          zhtext: "下一条命令",
-        },
-      ],
+      cmdList: [],
+      keyList: [],
     };
+  },
+  created() {
+    let data = require("../assets/json/index.json");
+    this.cmdList = data.cmdList;
+    this.keyList = data.keyList;
   },
 };
 </script>

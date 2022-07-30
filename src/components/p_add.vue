@@ -73,15 +73,15 @@ export default {
   },
   methods: {
     getCmdList() {
-      this.$http
-        .get("system/get_cmd_list.php", {
-          type: this.type,
-        })
-        .then((res) => {
-          if (res.code == 200) {
-            this.list = res.data;
+      let list = require("../assets/json/index.json").cmdList;
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].type == this.type) {
+          this.list = [];
+          for (let j = 0; j < list[i].list.length; j++) {
+            this.list.push(list[i].list[j].cmd);
           }
-        });
+        }
+      }
     },
     submit(e) {
       if (window.event) {
