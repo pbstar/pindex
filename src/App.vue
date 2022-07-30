@@ -3,7 +3,7 @@
     <p_header />
     <div class="body">
       <div :class="type == 0 && isFirst ? 'toptext1' : 'toptext2'">
-        Welcome to PINDEX,please use 'help'.
+        Welcome to PINDEX, please use 'help'.
       </div>
       <div class="item" v-for="(item, index) in list" :key="index">
         <p_added
@@ -25,7 +25,9 @@
       ref="p_add"
       :type="type"
       :typeList="typeList"
+      :hisList="hisList"
       @submit="submit"
+      @changeType="changeType"
     />
   </div>
 </template>
@@ -49,9 +51,14 @@ export default {
       type: 0,
       typeList: [],
       isFirst: true,
+      hisList: [],
     };
   },
   created() {
+    let hislist = this.$unit.getLocalStorage("pindex_history_list");
+    if (hislist && hislist != JSON.stringify(this.hisList)) {
+      this.hisList = JSON.parse(hislist);
+    }
     this.getTypeList();
   },
   mounted() {
@@ -82,6 +89,8 @@ export default {
           this.list = [];
         } else if (e.keyCode == 8) {
           this.$refs.p_add.todel();
+        } else if (e.keyCode == 38 || e.keyCode == 40) {
+          this.getHisList(e.keyCode);
         }
       };
     },
@@ -92,11 +101,19 @@ export default {
         }
       });
     },
+    getHisList(code) {
+      let hislist = this.$unit.getLocalStorage("pindex_history_list");
+      if (hislist && hislist != JSON.stringify(this.hisList)) {
+        this.hisList = JSON.parse(hislist);
+      }
+      this.$refs.p_add.toUpDown(code);
+    },
     submit(e) {
       if (this.$unit.isMobile()) {
         this.toMobile(e);
       } else {
         if (e.text || e.cmd) {
+          this.toSetHistory(e);
           this.isloading = true;
           this.toType(e);
         } else {
@@ -307,6 +324,23 @@ export default {
         atype: 0,
       });
       this.isloading = false;
+    },
+    toSetHistory(e) {
+      let hislist = this.$unit.getLocalStorage("pindex_history_list");
+      if (hislist) this.hisList = JSON.parse(hislist);
+      if (this.hisList.length > 19) this.hisList.pop();
+      this.hisList.unshift({
+        cmd: e.cmd,
+        text: e.text,
+        type: this.type,
+      });
+      this.$unit.setLocalStorage(
+        "pindex_history_list",
+        JSON.stringify(this.hisList)
+      );
+    },
+    changeType(e) {
+      this.type = e;
     },
   },
 };

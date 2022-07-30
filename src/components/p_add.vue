@@ -33,6 +33,7 @@ export default {
       list: [],
       cmd: "",
       isInput: false,
+      hisIndex: -1,
     };
   },
   props: {
@@ -46,11 +47,23 @@ export default {
         return [];
       },
     },
+    hisList: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
   },
   watch: {
     type: {
       handler() {
         this.getCmdList();
+      },
+      deep: true,
+    },
+    hisList: {
+      handler() {
+        this.hisIndex = -1;
       },
       deep: true,
     },
@@ -112,6 +125,28 @@ export default {
       this.$nextTick(() => {
         this.$refs.input.focus();
       });
+    },
+    toUpDown(code) {
+      if (this.isFocus) {
+        let boo = false;
+        if (
+          code == 38 &&
+          this.hisList.length > this.hisIndex + 1 &&
+          this.hisIndex < 20
+        ) {
+          this.hisIndex++;
+          boo = true;
+        } else if (code == 40 && this.hisIndex > 0) {
+          this.hisIndex--;
+          boo = true;
+        }
+        if (boo) {
+          let e = this.hisList[this.hisIndex];
+          this.$emit("changeType", e.type);
+          this.cmd = e.cmd;
+          this.$refs.input.innerHTML = e.text;
+        }
+      }
     },
   },
 };

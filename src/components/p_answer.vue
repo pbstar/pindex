@@ -118,6 +118,14 @@ export default {
           text: "ctrl+l",
           zhtext: "清屏",
         },
+        {
+          text: "↑",
+          zhtext: "上一条命令",
+        },
+        {
+          text: "↓",
+          zhtext: "下一条命令",
+        },
       ],
     };
   },
