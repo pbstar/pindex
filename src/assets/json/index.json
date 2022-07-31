@@ -57,6 +57,32 @@
           "zhtext": "进入根项目页"
         }
       ]
+    },
+    {
+      "name": "sousuo",
+      "type": 3,
+      "list": [
+        {
+          "cmd": "",
+          "text": "xx",
+          "zhtext": "跳转百度搜索xx"
+        },
+        {
+          "cmd": "baidu",
+          "text": "xx",
+          "zhtext": "跳转百度搜索xx"
+        },
+        {
+          "cmd": "csdn",
+          "text": "xx",
+          "zhtext": "跳转csdn搜索xx"
+        },
+        {
+          "cmd": "cd..",
+          "text": "",
+          "zhtext": "进入根项目页"
+        }
+      ]
     }
   ],
   "keyList": [
@@ -85,6 +111,10 @@
     {
       "text": "shoucang",
       "type": 2
+    },
+    {
+      "text": "sousuo",
+      "type": 3
     }
   ]
 }

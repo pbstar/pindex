@@ -119,16 +119,18 @@ export default {
       if (this.type == 0) {
         if (e.cmd) {
           if (e.cmd == "cd") {
-            if (e.text == "&nbsp;fanyi") {
-              this.isFirst = false;
-              this.toNoAns(e);
-              this.type = 1;
-              this.isloading = false;
-            } else if (e.text == "&nbsp;shoucang") {
-              this.isFirst = false;
-              this.toNoAns(e);
-              this.type = 2;
-              this.isloading = false;
+            if (e.text.indexOf("&nbsp;") > -1 && e.text.length > 6) {
+              let boo = true;
+              for (let i = 0; i < this.typeList.length; i++) {
+                if (this.typeList[i].text == e.text.slice(6)) {
+                  boo = false;
+                  this.isFirst = false;
+                  this.toNoAns(e);
+                  this.type = this.typeList[i].type;
+                  this.isloading = false;
+                }
+              }
+              if (boo) this.toNofind(e);
             } else {
               this.toNofind(e);
             }
@@ -263,6 +265,20 @@ export default {
         } else {
           this.toNofind(e);
         }
+      } else if (this.type == 3) {
+        if (e.cmd) {
+          if (e.cmd == "cd..") {
+            this.toType0(e);
+          } else if (e.cmd == "baidu") {
+            this.toSearch(e, 1);
+          } else if (e.cmd == "csdn") {
+            this.toSearch(e, 2);
+          } else {
+            this.toNofind(e);
+          }
+        } else {
+          this.toSearch(e, 0);
+        }
       }
     },
     toType0(e) {
@@ -335,6 +351,13 @@ export default {
     },
     changeType(e) {
       this.type = e;
+    },
+    toSearch(e, type) {
+      this.toSuccess(e);
+      if (type > 0) e.text = e.text.slice(6);
+      let baseUrl = "https://www.baidu.com/s?wd=";
+      if (type == 2) baseUrl = "https://so.csdn.net/so/search?q=";
+      window.open(baseUrl + e.text, "_blank");
     },
   },
 };
