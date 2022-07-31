@@ -37,6 +37,7 @@ import p_header from "@/components/p_header.vue";
 import p_add from "@/components/p_add.vue";
 import p_added from "@/components/p_added.vue";
 import p_answer from "@/components/p_answer.vue";
+import { dataConversionUtil } from "@/assets/js/export";
 export default {
   components: {
     p_header,
@@ -259,6 +260,24 @@ export default {
                 this.toError(e);
               }
             }
+          } else if (e.cmd == "export") {
+            let list = [];
+            if (this.$unit.getLocalStorage("pindex_collect_list")) {
+              list = JSON.parse(
+                this.$unit.getLocalStorage("pindex_collect_list")
+              );
+            }
+            var tableHeader = [["序号", "名称", "网址"]];
+            var dataList = [];
+            list.forEach((item, index) => {
+              dataList.push([index + 1, item.text, item.url]);
+            });
+            dataConversionUtil.dataToExcel(
+              "Pindex收藏列表",
+              tableHeader,
+              dataList
+            );
+            this.toSuccess(e);
           } else {
             this.toNofind(e);
           }

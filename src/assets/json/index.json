@@ -52,6 +52,11 @@
           "zhtext": "将xxname移除收藏列表"
         },
         {
+          "cmd": "export",
+          "text": "",
+          "zhtext": "导出收藏列表"
+        },
+        {
           "cmd": "cd..",
           "text": "",
           "zhtext": "进入根项目页"
