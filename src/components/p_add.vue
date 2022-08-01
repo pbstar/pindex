@@ -2,32 +2,27 @@
   <div class="box">
     <div class="label">
       <span>PS C:\</span>
-      <span
-        v-for="(item, index) in typeList"
-        :key="index"
-        v-show="type == item.type"
-        >{{ item.text }}\</span
-      >
+      <span v-for="(item, index) in typeList"
+            :key="index"
+            v-show="type == item.type">{{ item.text }}\</span>
       <span style="margin-right: 6px">></span>
       <span class="active">{{ cmd }}</span>
     </div>
-    <div
-      class="input"
-      :class="isFocus ? 'inputActive' : ''"
-      ref="input"
-      contenteditable="true"
-      @compositionstart="isInput = true"
-      @compositionend="isInput = false"
-      @keydown.enter.exact="submit"
-      @input="change"
-      @focus="isFocus = true"
-      @blur="isFocus = false"
-    ></div>
+    <div class="input"
+         :class="isFocus ? 'inputActive' : ''"
+         ref="input"
+         contenteditable="true"
+         @compositionstart="isInput = true"
+         @compositionend="isInput = false"
+         @keydown.enter.exact="submit"
+         @input="change"
+         @focus="isFocus = true"
+         @blur="isFocus = false"></div>
   </div>
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       isFocus: false,
       list: [],
@@ -56,23 +51,23 @@ export default {
   },
   watch: {
     type: {
-      handler() {
+      handler () {
         this.getCmdList();
       },
       deep: true,
     },
     hisList: {
-      handler() {
+      handler () {
         this.hisIndex = -1;
       },
       deep: true,
     },
   },
-  created() {
+  created () {
     this.getCmdList();
   },
   methods: {
-    getCmdList() {
+    getCmdList () {
       let list = require("../assets/json/index.json").cmdList;
       for (let i = 0; i < list.length; i++) {
         if (list[i].type == this.type) {
@@ -83,7 +78,7 @@ export default {
         }
       }
     },
-    submit(e) {
+    submit (e) {
       if (window.event) {
         window.event.returnValue = false;
       } else {
@@ -96,7 +91,7 @@ export default {
       this.cmd = "";
       this.$refs.input.innerHTML = "";
     },
-    change() {
+    change () {
       setTimeout(() => {
         if (this.isInput) return;
         this.$refs.input.focus();
@@ -104,7 +99,7 @@ export default {
         document.getSelection().collapseToEnd();
         let str = this.cmd + this.$refs.input.innerHTML.replace(/<[^>]+>/g, "");
         for (let i = 0; i < this.list.length; i++) {
-          if (this.list[i].indexOf(str) >= 0) {
+          if (this.list[i] == str) {
             this.cmd = str;
             this.$refs.input.innerHTML = "";
             return;
@@ -116,17 +111,17 @@ export default {
         }
       }, 5);
     },
-    todel() {
+    todel () {
       if (this.$refs.input.innerHTML.replace(/<[^>]+>/g, "") == "") {
         this.cmd = "";
       }
     },
-    tofocus() {
+    tofocus () {
       this.$nextTick(() => {
         this.$refs.input.focus();
       });
     },
-    toUpDown(code) {
+    toUpDown (code) {
       if (this.isFocus) {
         let boo = false;
         if (

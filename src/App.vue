@@ -5,30 +5,27 @@
       <div :class="type == 0 && isFirst ? 'toptext1' : 'toptext2'">
         Welcome to PINDEX, please use 'help'.
       </div>
-      <div class="item" v-for="(item, index) in list" :key="index">
-        <p_added
-          :text="item.q"
-          :cmd="item.cmd"
-          :type="item.type"
-          :typeList="typeList"
-        />
-        <p_answer
-          v-show="!(isloading && index == list.length - 1)"
-          :text="item.a"
-          :type="item.atype"
-        />
+      <div class="item"
+           v-for="(item, index) in list"
+           :key="index">
+        <p_added :text="item.q"
+                 :cmd="item.cmd"
+                 :type="item.type"
+                 :typeList="typeList" />
+        <p_answer v-show="!(isloading && index == list.length - 1)"
+                  :text="item.a"
+                  :type="item.atype" />
       </div>
     </div>
-    <div class="loading" v-show="isloading">...</div>
-    <p_add
-      v-show="!isloading"
-      ref="p_add"
-      :type="type"
-      :typeList="typeList"
-      :hisList="hisList"
-      @submit="submit"
-      @changeType="changeType"
-    />
+    <div class="loading"
+         v-show="isloading">...</div>
+    <p_add v-show="!isloading"
+           ref="p_add"
+           :type="type"
+           :typeList="typeList"
+           :hisList="hisList"
+           @submit="submit"
+           @changeType="changeType" />
   </div>
 </template>
 
@@ -45,7 +42,7 @@ export default {
     p_added,
     p_answer,
   },
-  data() {
+  data () {
     return {
       list: [],
       isloading: false,
@@ -55,7 +52,7 @@ export default {
       hisList: [],
     };
   },
-  created() {
+  created () {
     let data = require("./assets/json/index.json");
     this.typeList = data.typeList;
     let hislist = this.$unit.getLocalStorage("pindex_history_list");
@@ -63,14 +60,14 @@ export default {
       this.hisList = JSON.parse(hislist);
     }
   },
-  mounted() {
+  mounted () {
     document.oncontextmenu = () => {
       return false;
     };
     this.watchKey();
   },
   methods: {
-    watchKey() {
+    watchKey () {
       document.onkeydown = () => {
         var e = window.event || arguments[0];
         if (e.keyCode == 123) {
@@ -96,14 +93,14 @@ export default {
         }
       };
     },
-    getHisList(code) {
+    getHisList (code) {
       let hislist = this.$unit.getLocalStorage("pindex_history_list");
       if (hislist && hislist != JSON.stringify(this.hisList)) {
         this.hisList = JSON.parse(hislist);
       }
       this.$refs.p_add.toUpDown(code);
     },
-    submit(e) {
+    submit (e) {
       if (this.$unit.isMobile()) {
         this.toMobile(e);
       } else {
@@ -116,7 +113,7 @@ export default {
         }
       }
     },
-    toType(e) {
+    toType (e) {
       if (this.type == 0) {
         if (e.cmd) {
           if (e.cmd == "cd") {
@@ -278,8 +275,6 @@ export default {
               dataList
             );
             this.toSuccess(e);
-          } else {
-            this.toNofind(e);
           }
         } else {
           this.toNofind(e);
@@ -292,20 +287,18 @@ export default {
             this.toSearch(e, 1);
           } else if (e.cmd == "csdn") {
             this.toSearch(e, 2);
-          } else {
-            this.toNofind(e);
           }
         } else {
           this.toSearch(e, 0);
         }
       }
     },
-    toType0(e) {
+    toType0 (e) {
       this.toNoAns(e);
       this.type = 0;
       this.isloading = false;
     },
-    toNoAns(e) {
+    toNoAns (e) {
       this.list.push({
         q: e.text,
         cmd: e.cmd,
@@ -314,7 +307,7 @@ export default {
         atype: 0,
       });
     },
-    toNofind(e) {
+    toNofind (e) {
       this.list.push({
         q: e.text,
         cmd: e.cmd,
@@ -324,7 +317,7 @@ export default {
       });
       this.isloading = false;
     },
-    toSuccess(e) {
+    toSuccess (e) {
       this.list.push({
         q: e.text,
         cmd: e.cmd,
@@ -334,7 +327,7 @@ export default {
       });
       this.isloading = false;
     },
-    toError(e) {
+    toError (e) {
       this.list.push({
         q: e.text,
         cmd: e.cmd,
@@ -344,7 +337,7 @@ export default {
       });
       this.isloading = false;
     },
-    toMobile(e) {
+    toMobile (e) {
       this.list.push({
         q: e.text,
         cmd: e.cmd,
@@ -354,7 +347,7 @@ export default {
       });
       this.isloading = false;
     },
-    toSetHistory(e) {
+    toSetHistory (e) {
       let hislist = this.$unit.getLocalStorage("pindex_history_list");
       if (hislist) this.hisList = JSON.parse(hislist);
       if (this.hisList.length > 19) this.hisList.pop();
@@ -368,10 +361,10 @@ export default {
         JSON.stringify(this.hisList)
       );
     },
-    changeType(e) {
+    changeType (e) {
       this.type = e;
     },
-    toSearch(e, type) {
+    toSearch (e, type) {
       this.toSuccess(e);
       if (type > 0) e.text = e.text.slice(6);
       let baseUrl = "https://www.baidu.com/s?wd=";
