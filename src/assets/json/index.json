@@ -1,10 +1,8 @@
 {
-  "cmdList": [
-    {
+  "cmdList": [{
       "name": "",
       "type": 0,
-      "list": [
-        {
+      "list": [{
           "cmd": "help",
           "text": "",
           "zhtext": "帮助"
@@ -19,8 +17,7 @@
     {
       "name": "fanyi",
       "type": 1,
-      "list": [
-        {
+      "list": [{
           "cmd": "",
           "text": "xx",
           "zhtext": "将xx翻译为英文"
@@ -35,8 +32,7 @@
     {
       "name": "shoucang",
       "type": 2,
-      "list": [
-        {
+      "list": [{
           "cmd": "list",
           "text": "",
           "zhtext": "获取收藏列表"
@@ -66,8 +62,7 @@
     {
       "name": "sousuo",
       "type": 3,
-      "list": [
-        {
+      "list": [{
           "cmd": "",
           "text": "xx",
           "zhtext": "跳转百度搜索xx"
@@ -88,10 +83,34 @@
           "zhtext": "进入根项目页"
         }
       ]
+    },
+    {
+      "namec": "resou",
+      "typec": 4,
+      "list": [{
+          "cmd": "weibo",
+          "text": "",
+          "zhtext": "获取微博热搜"
+        },
+        {
+          "cmd": "baidu",
+          "text": "",
+          "zhtext": "获取百度热搜"
+        },
+        {
+          "cmd": "zhihu",
+          "text": "",
+          "zhtext": "获取知乎热搜"
+        },
+        {
+          "cmd": "cd..",
+          "text": "",
+          "zhtext": "进入根项目页"
+        }
+      ]
     }
   ],
-  "keyList": [
-    {
+  "keyList": [{
       "text": "ctrl+c",
       "zhtext": "终结当前运行中的命令"
     },
@@ -106,20 +125,6 @@
     {
       "text": "↓",
       "zhtext": "下一条命令"
-    }
-  ],
-  "typeList": [
-    {
-      "text": "fanyi",
-      "type": 1
-    },
-    {
-      "text": "shoucang",
-      "type": 2
-    },
-    {
-      "text": "sousuo",
-      "type": 3
     }
   ]
 }

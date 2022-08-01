@@ -53,12 +53,11 @@ export default {
     };
   },
   created () {
-    let data = require("./assets/json/index.json");
-    this.typeList = data.typeList;
     let hislist = this.$unit.getLocalStorage("pindex_history_list");
     if (hislist && hislist != JSON.stringify(this.hisList)) {
       this.hisList = JSON.parse(hislist);
     }
+    this.getTypeList()
   },
   mounted () {
     document.oncontextmenu = () => {
@@ -72,7 +71,6 @@ export default {
         var e = window.event || arguments[0];
         if (e.keyCode == 123) {
           alert("不许搞我哦!");
-          // return false;
         } else if (e.ctrlKey && e.keyCode == 85) {
           return false;
         } else if (e.ctrlKey && e.keyCode == 83) {
@@ -92,6 +90,17 @@ export default {
           this.getHisList(e.keyCode);
         }
       };
+    },
+    getTypeList () {
+      let clist = require("./assets/json/index.json").cmdList;
+      for (let i = 0; i < clist.length; i++) {
+        if (clist[i].type > 0) {
+          this.typeList.push({
+            text: clist[i].name,
+            type: clist[i].type
+          })
+        }
+      }
     },
     getHisList (code) {
       let hislist = this.$unit.getLocalStorage("pindex_history_list");
@@ -291,6 +300,16 @@ export default {
         } else {
           this.toSearch(e, 0);
         }
+      } else if (this.type == 4) {
+        if (e.cmd) {
+          if (e.cmd == "cd..") {
+            this.toType0(e);
+          } else if (e.cmd == "weibo" || e.cmd == "baidu" || e.cmd == "zhihu") {
+            this.toGetResou(e);
+          }
+        } else {
+          this.toNofind(e);
+        }
       }
     },
     toType0 (e) {
@@ -371,6 +390,39 @@ export default {
       if (type == 2) baseUrl = "https://so.csdn.net/so/search?q=";
       window.open(baseUrl + e.text, "_blank");
     },
+    toGetResou (e) {
+      this.toNoAns(e);
+      this.$http
+        .get("api/get_resou.php", {
+          name: e.cmd
+        })
+        .then((res) => {
+          if (res.code == 200) {
+            if (this.list.length > 0 && this.isloading) {
+              if (res.data.length > 0) {
+                this.list[this.list.length - 1].atype = 1
+                let list = []
+                for (let i = 0; i < res.data.length; i++) {
+                  list.push({
+                    text: res.data[i].title,
+                    url: res.data[i].url
+                  })
+                }
+                this.list[this.list.length - 1].a = list;
+                this.isloading = false;
+              } else {
+                this.toNofind(e);
+              }
+            }
+          } else {
+            if (this.list.length > 0 && this.isloading) {
+              this.list[this.list.length - 1].a = "no find";
+              this.isloading = false;
+            }
+          }
+          this.$refs.p_add.tofocus();
+        });
+    }
   },
 };
 </script>
