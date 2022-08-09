@@ -1,13 +1,18 @@
 <?php
 include "../header.php";
 $name = $_GET['name'];
-$type = 'wbHot';
-if ($name == 'baidu') $type = 'baiduRD';
-else if ($name == 'zhihu') $type = 'zhihuHot';
-$baseurl = 'https://api.vvhan.com/api/hotlist?type=';
-date_default_timezone_set("PRC");
-$res = json_decode(iconv("GB2312", "UTF-8", file_get_contents($baseurl . $type)));
+$ak = '46c2a260636bf5864c282d20d60a1dad';
+$sk = '5f6b9c5562649cec6d898f11c7dfb0ae';
+$baseurl = 'https://www.coderutil.com/api/resou/v1/' . $name . '?access-key=' . $ak . '&secret-key=' . $sk;
+if ($name) {
+  $res = json_decode(file_get_contents($baseurl));
+}
 $data = new stdClass();
-$data->code = "200";
-$data->data = $res->$data;
+if ($res->code == '200') {
+  $data->code = "200";
+  $data->data = $res->data;
+} else {
+  $data->code = "201";
+  $data->data = null;
+}
 echo json_encode($data, JSON_UNESCAPED_UNICODE);

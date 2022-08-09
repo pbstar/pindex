@@ -8,7 +8,8 @@ if (strtoupper($_SERVER['REQUEST_METHOD']) == 'OPTIONS') exit;
 $origin = $_SERVER['HTTP_ORIGIN'];
 $allowOrigin = array(
     'http://pindex.mcweb.club',
-    'http://localhost:8080'
+    'http://localhost:8080',
+    'http://localhost:8081'
 );
 $boo=1;
 if (in_array($origin, $allowOrigin)) $boo=2;
@@ -17,4 +18,3 @@ if($boo==1){
     $data->code = "500";
     die(json_encode($data, JSON_UNESCAPED_UNICODE));
 }
-?>

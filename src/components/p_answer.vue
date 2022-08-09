@@ -1,20 +1,21 @@
 <template>
   <div class="box">
     <div v-if="type == 1">
-      <p v-for="(item, index) in text" :key="index">
-        <a :href="item.url" target="_blank">{{ item.text }}</a>
+      <p v-for="(item, index) in text"
+         :key="index">
+        <a :href="item.url"
+           target="_blank">{{index+1}}.{{item.text}}</a>
       </p>
       <p v-show="text.length == 0">no list</p>
     </div>
     <div v-else-if="type == 999">
       <p>Command line</p>
-      <div v-for="(item, index) in cmdList" :key="index">
+      <div v-for="(item, index) in cmdList"
+           :key="index">
         <p>/{{ item.name }}</p>
-        <div
-          class="btr"
-          v-for="(items, indexs) in item.list"
-          :key="indexs + 's'"
-        >
+        <div class="btr"
+             v-for="(items, indexs) in item.list"
+             :key="indexs + 's'">
           <div class="btd">
             <span class="active">{{ items.cmd }}</span>
             <span> {{ items.text }}</span>
@@ -26,7 +27,9 @@
       </div>
       <br />
       <p>Shortcut key</p>
-      <div class="btr" v-for="(item, index) in keyList" :key="index + 'a'">
+      <div class="btr"
+           v-for="(item, index) in keyList"
+           :key="index + 'a'">
         <div class="btd">
           <span> {{ item.text }}</span>
         </div>
@@ -50,13 +53,13 @@ export default {
       default: 0,
     },
   },
-  data() {
+  data () {
     return {
       cmdList: [],
       keyList: [],
     };
   },
-  created() {
+  created () {
     let data = require("../assets/json/index.json");
     this.cmdList = data.cmdList;
     this.keyList = data.keyList;

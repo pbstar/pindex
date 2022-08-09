@@ -4,8 +4,10 @@
       <span>PINDEX</span>
     </div>
     <div class="right">
-      <a href="https://github.com/pbstar/pindex" target="_blank">
-        <img src="../assets/icons/github.png" alt="" />
+      <a href="https://github.com/pbstar/pindex"
+         target="_blank">
+        <img src="../assets/icons/github.png"
+             alt="" />
       </a>
     </div>
     <div class="time">{{ time }}</div>
@@ -13,23 +15,23 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       time: "...",
       timer: "",
     };
   },
-  created() {
+  created () {
     this.timer = setInterval(() => {
       this.getNowTime();
     }, 1000);
   },
-  beforeDestroy() {
+  beforeDestroy () {
     clearInterval(this.timer);
   },
   methods: {
-    getNowTime() {
-      function addZero(s) {
+    getNowTime () {
+      function addZero (s) {
         return s < 10 ? "0" + s : s;
       }
       var date = new Date();
@@ -67,6 +69,7 @@ export default {
   align-items: center;
   margin-bottom: 3px;
   background-color: #000;
+  z-index: 100;
   .left {
     border-bottom: 1px solid #eee;
     line-height: 35px;

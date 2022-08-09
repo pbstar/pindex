@@ -404,7 +404,7 @@ export default {
                 let list = []
                 for (let i = 0; i < res.data.length; i++) {
                   list.push({
-                    text: res.data[i].title,
+                    text: res.data[i].keyword,
                     url: res.data[i].url
                   })
                 }

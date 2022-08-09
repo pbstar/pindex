@@ -85,9 +85,9 @@
       ]
     },
     {
-      "namec": "resou",
-      "typec": 4,
-      "listc": [{
+      "name": "resou",
+      "type": 4,
+      "list": [{
           "cmd": "weibo",
           "text": "",
           "zhtext": "获取微博热搜"
@@ -101,6 +101,11 @@
           "cmd": "zhihu",
           "text": "",
           "zhtext": "获取知乎热搜"
+        },
+        {
+          "cmd": "csdn",
+          "text": "",
+          "zhtext": "获取CSDN热搜"
         },
         {
           "cmd": "cd..",
