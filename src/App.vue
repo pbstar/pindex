@@ -60,9 +60,7 @@ export default {
     this.getTypeList()
   },
   mounted () {
-    document.oncontextmenu = () => {
-      return false;
-    };
+    document.oncontextmenu = () => { return false };
     this.watchKey();
   },
   methods: {
