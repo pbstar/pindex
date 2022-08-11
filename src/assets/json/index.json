@@ -30,27 +30,27 @@
       ]
     },
     {
-      "name": "shoucang",
+      "name": "shuqian",
       "type": 2,
       "list": [{
           "cmd": "list",
           "text": "",
-          "zhtext": "获取收藏列表"
+          "zhtext": "获取书签列表"
         },
         {
           "cmd": "add",
-          "text": "xxname xxurl",
-          "zhtext": "将xxurl以xxname名称加入收藏列表"
+          "text": "xx url",
+          "zhtext": "将url以xx名称加入书签列表"
         },
         {
           "cmd": "del",
-          "text": "xxname",
-          "zhtext": "将xxname移除收藏列表"
+          "text": "xx",
+          "zhtext": "将xx移除书签列表"
         },
         {
           "cmd": "export",
           "text": "",
-          "zhtext": "导出收藏列表"
+          "zhtext": "导出书签列表"
         },
         {
           "cmd": "cd..",

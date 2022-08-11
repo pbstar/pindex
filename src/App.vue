@@ -109,14 +109,14 @@ export default {
     },
     submit (e) {
       if (this.$unit.isMobile()) {
-        this.toMobile(e);
+        this.toPushAns(e, 'Please use it on pc!', 0, true);
       } else {
         if (e.text || e.cmd) {
           this.toSetHistory(e);
           this.isloading = true;
           this.toType(e);
         } else {
-          this.toNoAns(e);
+          this.toPushAns(e, '', 0, false);
         }
       }
     },
@@ -130,38 +130,28 @@ export default {
                 if (this.typeList[i].text == e.text.slice(6)) {
                   boo = false;
                   this.isFirst = false;
-                  this.toNoAns(e);
+                  this.toPushAns(e, '', 0, false);
                   this.type = this.typeList[i].type;
                   this.isloading = false;
                 }
               }
-              if (boo) this.toNofind(e);
+              if (boo) this.toPushAns(e, 'not find', 0, true);
             } else {
-              this.toNofind(e);
+              this.toPushAns(e, 'not find', 0, true);
             }
           } else if (e.cmd == "help") {
-            this.list.push({
-              q: e.text,
-              cmd: e.cmd,
-              type: this.type,
-              a: "",
-              atype: 999,
-            });
-            this.isloading = false;
+            this.toPushA(e, '', 999, true)
           }
         } else {
-          this.toNofind(e);
+          this.toPushAns(e, 'not find', 0, true);
         }
       } else if (this.type == 1) {
         if (e.cmd) {
-          if (e.cmd == "cd..") {
-            this.toType0(e);
-          }
+          if (e.cmd == "cd..") this.toType0(e);
         } else {
-          this.toNoAns(e);
-          let sign = this.$unit.toMd5(
-            "20220728001285904" + e.text + "pindex" + "ybpkoC_rhQ3fRABGkhXx"
-          );
+          this.toPushAns(e, '', 0, false);
+          let str = "20220728001285904" + e.text + "pindex" + "ybpkoC_rhQ3fRABGkhXx"
+          let sign = this.$unit.toMd5(str);
           this.$http
             .get("api/fanyi.php", {
               text: e.text,
@@ -178,7 +168,7 @@ export default {
                     this.list[this.list.length - 1].a = res.data.text;
                     this.isloading = false;
                   } else {
-                    this.toNofind(e);
+                    this.toPushAns(e, 'not find', 0, true);
                   }
                 }
               } else {
@@ -192,38 +182,19 @@ export default {
         }
       } else if (this.type == 2) {
         if (e.cmd) {
+          let list = [];
+          let collect = this.$unit.getLocalStorage("pindex_collect_list")
+          if (collect) list = JSON.parse(collect);
           if (e.cmd == "cd..") {
             this.toType0(e);
           } else if (e.cmd == "list") {
-            let list = [];
-            if (this.$unit.getLocalStorage("pindex_collect_list")) {
-              list = JSON.parse(
-                this.$unit.getLocalStorage("pindex_collect_list")
-              );
-            }
-            this.list.push({
-              q: e.text,
-              cmd: e.cmd,
-              type: this.type,
-              a: list,
-              atype: 1,
-            });
-            this.isloading = false;
+            this.toPushAns(e, list, 1, true)
           } else if (
             (e.cmd == "add" || e.cmd == "del") &&
             e.text.indexOf("&nbsp;") > -1 &&
             e.text.length > 6
           ) {
-            let strList = e.text
-              .slice(6)
-              .replace(/\s+/g, "&nbsp;")
-              .split("&nbsp;");
-            let list = [];
-            if (this.$unit.getLocalStorage("pindex_collect_list")) {
-              list = JSON.parse(
-                this.$unit.getLocalStorage("pindex_collect_list")
-              );
-            }
+            let strList = e.text.slice(6).replace(/\s+/g, "&nbsp;").split("&nbsp;");
             let index = -1;
             for (let i = 0; i < list.length; i++) {
               if (list[i].text == strList[0]) index = i;
@@ -241,128 +212,66 @@ export default {
                       url: strList[1],
                     });
                   }
-                  this.$unit.setLocalStorage(
-                    "pindex_collect_list",
-                    JSON.stringify(list)
-                  );
-                  this.toSuccess(e);
+                  this.$unit.setLocalStorage("pindex_collect_list", JSON.stringify(list));
+                  this.toPushAns(e, 'success', 0, true);
                 } else {
-                  this.toError(e);
+                  this.toPushAns(e, 'error', 0, true);
                 }
               } else {
-                this.toError(e);
+                this.toPushAns(e, 'error', 0, true);
               }
             } else if (e.cmd == "del") {
               if (index >= 0) {
                 list.splice(index, 1);
-                this.$unit.setLocalStorage(
-                  "pindex_collect_list",
-                  JSON.stringify(list)
-                );
-                this.toSuccess(e);
+                this.$unit.setLocalStorage("pindex_collect_list", JSON.stringify(list));
+                this.toPushAns(e, 'success', 0, true);
               } else {
-                this.toError(e);
+                this.toPushAns(e, 'error', 0, true);
               }
             }
           } else if (e.cmd == "export") {
-            let list = [];
-            if (this.$unit.getLocalStorage("pindex_collect_list")) {
-              list = JSON.parse(
-                this.$unit.getLocalStorage("pindex_collect_list")
-              );
-            }
-            var tableHeader = [["序号", "名称", "网址"]];
-            var dataList = [];
+            var topList = [["序号", "名称", "网址"]];
+            var midList = [];
             list.forEach((item, index) => {
-              dataList.push([index + 1, item.text, item.url]);
+              midList.push([index + 1, item.text, item.url]);
             });
-            dataConversionUtil.dataToExcel(
-              "Pindex收藏列表",
-              tableHeader,
-              dataList
-            );
-            this.toSuccess(e);
+            dataConversionUtil.dataToExcel("Pindex书签列表", topList, midList);
+            this.toPushAns(e, 'success', 0, true);
           }
         } else {
-          this.toNofind(e);
+          this.toPushAns(e, 'not find', 0, true);
         }
       } else if (this.type == 3) {
         if (e.cmd) {
-          if (e.cmd == "cd..") {
-            this.toType0(e);
-          } else if (e.cmd == "baidu") {
-            this.toSearch(e, 1);
-          } else if (e.cmd == "csdn") {
-            this.toSearch(e, 2);
-          }
+          let cmdlist = ["baidu", "csdn"]
+          if (e.cmd == "cd..") this.toType0(e);
+          else if (cmdlist.includes(e.cmd)) this.toSearch(e, 1);
         } else {
           this.toSearch(e, 0);
         }
       } else if (this.type == 4) {
         if (e.cmd) {
-          if (e.cmd == "cd..") {
-            this.toType0(e);
-          } else if (e.cmd == "weibo" || e.cmd == "baidu" || e.cmd == "zhihu") {
-            this.toGetResou(e);
-          }
+          let cmdlist = ["weibo", "baidu", "zhihu", "csdn"]
+          if (e.cmd == "cd..") this.toType0(e);
+          else if (cmdlist.includes(e.cmd)) this.toGetResou(e);
         } else {
-          this.toNofind(e);
+          this.toPushAns(e, 'not find', 0, true);
         }
       }
     },
     toType0 (e) {
-      this.toNoAns(e);
       this.type = 0;
-      this.isloading = false;
+      this.toPushAns(e, '', 0, true);
     },
-    toNoAns (e) {
+    toPushAns (e, a, at, isloading) {
       this.list.push({
         q: e.text,
         cmd: e.cmd,
         type: this.type,
-        a: "",
-        atype: 0,
+        a: a,
+        atype: at,
       });
-    },
-    toNofind (e) {
-      this.list.push({
-        q: e.text,
-        cmd: e.cmd,
-        type: this.type,
-        a: "not find",
-        atype: 0,
-      });
-      this.isloading = false;
-    },
-    toSuccess (e) {
-      this.list.push({
-        q: e.text,
-        cmd: e.cmd,
-        type: this.type,
-        a: "success",
-        atype: 0,
-      });
-      this.isloading = false;
-    },
-    toError (e) {
-      this.list.push({
-        q: e.text,
-        cmd: e.cmd,
-        type: this.type,
-        a: "error",
-        atype: 0,
-      });
-      this.isloading = false;
-    },
-    toMobile (e) {
-      this.list.push({
-        q: e.text,
-        cmd: e.cmd,
-        type: this.type,
-        a: "Please use it on pc!",
-        atype: 0,
-      });
-      this.isloading = false;
+      if (isloading) this.isloading = false;
     },
     toSetHistory (e) {
       let hislist = this.$unit.getLocalStorage("pindex_history_list");
@@ -382,14 +291,14 @@ export default {
       this.type = e;
     },
     toSearch (e, type) {
-      this.toSuccess(e);
-      if (type > 0) e.text = e.text.slice(6);
+      this.toPushAns(e, 'success', 0, true);
+      if (type == 1) e.text = e.text.slice(6);
       let baseUrl = "https://www.baidu.com/s?wd=";
-      if (type == 2) baseUrl = "https://so.csdn.net/so/search?q=";
+      if (e.cmd == 'csdn') baseUrl = "https://so.csdn.net/so/search?q=";
       window.open(baseUrl + e.text, "_blank");
     },
     toGetResou (e) {
-      this.toNoAns(e);
+      this.toPushAns(e, '', 0, false);
       this.$http
         .get("api/get_resou.php", {
           name: e.cmd
@@ -409,7 +318,7 @@ export default {
                 this.list[this.list.length - 1].a = list;
                 this.isloading = false;
               } else {
-                this.toNofind(e);
+                this.toPushAns(e, 'not find', 0, true);
               }
             }
           } else {

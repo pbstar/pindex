@@ -79,11 +79,8 @@ export default {
       }
     },
     submit (e) {
-      if (window.event) {
-        window.event.returnValue = false;
-      } else {
-        e.preventDefault();
-      }
+      if (window.event) window.event.returnValue = false;
+      else e.preventDefault();
       this.$emit("submit", {
         cmd: this.cmd,
         text: this.$refs.input.innerHTML.replace(/<[^>]+>/g, ""),
