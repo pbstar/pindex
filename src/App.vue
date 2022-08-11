@@ -140,7 +140,7 @@ export default {
               this.toPushAns(e, 'not find', 0, true);
             }
           } else if (e.cmd == "help") {
-            this.toPushA(e, '', 999, true)
+            this.toPushAns(e, '', 999, true)
           }
         } else {
           this.toPushAns(e, 'not find', 0, true);
