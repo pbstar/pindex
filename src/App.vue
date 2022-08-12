@@ -277,6 +277,16 @@ export default {
       let hislist = this.$unit.getLocalStorage("pindex_history_list");
       if (hislist) this.hisList = JSON.parse(hislist);
       if (this.hisList.length > 19) this.hisList.pop();
+      if (this.hisList.length > 0) {
+        let a = this.hisList[0]
+        if (a.cmd != e.cmd || a.text != e.text || a.type != this.type) {
+          this.toSetHis(e)
+        }
+      } else {
+        this.toSetHis(e)
+      }
+    },
+    toSetHis (e) {
       this.hisList.unshift({
         cmd: e.cmd,
         text: e.text,
