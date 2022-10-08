@@ -275,8 +275,8 @@ export default {
       }
     },
     toType0(e) {
-      this.type = 0;
       this.toPushAns(e, "", 0, true);
+      this.type = 0;
     },
     toPushAns(e, a, at, isloading) {
       this.list.push({
