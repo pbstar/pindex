@@ -68,7 +68,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 3px;
-  background-color: #000;
+  background-color: #111;
   z-index: 100;
   .left {
     border-bottom: 1px solid #eee;
