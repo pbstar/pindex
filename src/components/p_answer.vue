@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <div v-if="type == 1">
+    <div v-if="atype == 1">
       <p v-for="(item, index) in text"
          :key="index">
         <a :href="item.url"
@@ -8,7 +8,7 @@
       </p>
       <p v-show="text.length == 0">no list</p>
     </div>
-    <div v-else-if="type == 999">
+    <div v-else-if="atype == 999">
       <p>Command line</p>
       <div v-for="(item, index) in cmdList"
            :key="index">
@@ -48,7 +48,7 @@ export default {
       type: [String, Array, Object],
       default: "",
     },
-    type: {
+    atype: {
       type: Number,
       default: 0,
     },

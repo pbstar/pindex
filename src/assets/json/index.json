@@ -113,6 +113,21 @@
           "zhtext": "进入根项目页"
         }
       ]
+    },
+    {
+      "name": "music",
+      "type": 5,
+      "list": [{
+          "cmd": "tuijian",
+          "text": "",
+          "zhtext": "获取推荐的音乐列表"
+        },
+        {
+          "cmd": "cd..",
+          "text": "",
+          "zhtext": "进入根项目页"
+        }
+      ]
     }
   ],
   "keyList": [{

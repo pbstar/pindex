@@ -15,7 +15,7 @@
         <p_answer
           v-show="!(isloading && index == list.length - 1)"
           :text="item.a"
-          :type="item.atype"
+          :atype="item.atype"
         />
       </div>
     </div>
@@ -272,6 +272,13 @@ export default {
         } else {
           this.toPushAns(e, "not find", 0, true);
         }
+      } else if (this.type == 5) {
+        if (e.cmd) {
+          if (e.cmd == "cd..") this.toType0(e);
+          else if (e.cmd == "tuijian") this.toGetMusic(e);
+        } else {
+          this.toPushAns(e, "not find", 0, true);
+        }
       }
     },
     toType0(e) {
@@ -355,6 +362,38 @@ export default {
           this.$refs.p_add.tofocus();
         });
     },
+    toGetMusic(e){
+      this.toPushAns(e, "", 0, false);
+      this.$http
+        .get("api/get_music.php")
+        .then((res) => {
+          if (res.code == 200) {
+            if (this.list.length > 0 && this.isloading) {
+              console.log(res.data);
+              // if (res.data.length > 0) {
+              //   this.list[this.list.length - 1].atype = 1;
+              //   let list = [];
+              //   for (let i = 0; i < res.data.length; i++) {
+              //     list.push({
+              //       text: res.data[i].keyword,
+              //       url: res.data[i].url,
+              //     });
+              //   }
+              //   this.list[this.list.length - 1].a = list;
+              //   this.isloading = false;
+              // } else {
+              //   this.toPushAns(e, "not find", 0, true);
+              // }
+            }
+          } else {
+            if (this.list.length > 0 && this.isloading) {
+              this.list[this.list.length - 1].a = "no find";
+              this.isloading = false;
+            }
+          }
+          this.$refs.p_add.tofocus();
+        });
+    }
   },
 };
 </script>
