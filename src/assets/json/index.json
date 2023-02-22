@@ -1,8 +1,10 @@
 {
-  "cmdList": [{
+  "cmdList": [
+    {
       "name": "",
       "type": 0,
-      "list": [{
+      "list": [
+        {
           "cmd": "help",
           "text": "",
           "zhtext": "帮助"
@@ -17,7 +19,8 @@
     {
       "name": "fanyi",
       "type": 1,
-      "list": [{
+      "list": [
+        {
           "cmd": "",
           "text": "xx",
           "zhtext": "将xx翻译为英文"
@@ -32,7 +35,8 @@
     {
       "name": "shuqian",
       "type": 2,
-      "list": [{
+      "list": [
+        {
           "cmd": "list",
           "text": "",
           "zhtext": "获取书签列表"
@@ -62,7 +66,8 @@
     {
       "name": "sousuo",
       "type": 3,
-      "list": [{
+      "list": [
+        {
           "cmd": "",
           "text": "xx",
           "zhtext": "跳转百度搜索xx"
@@ -87,7 +92,8 @@
     {
       "name": "resou",
       "type": 4,
-      "list": [{
+      "list": [
+        {
           "cmd": "weibo",
           "text": "",
           "zhtext": "获取微博热搜"
@@ -117,7 +123,8 @@
     {
       "name": "music",
       "type": 5,
-      "list": [{
+      "list": [
+        {
           "cmd": "tuijian",
           "text": "",
           "zhtext": "获取推荐的音乐列表"
@@ -128,9 +135,26 @@
           "zhtext": "进入根项目页"
         }
       ]
+    },
+    {
+      "name": "chat",
+      "type": 6,
+      "list": [
+        {
+          "cmd": "",
+          "text": "xx",
+          "zhtext": "问xx问题"
+        },
+        {
+          "cmd": "cd..",
+          "text": "",
+          "zhtext": "进入根项目页"
+        }
+      ]
     }
   ],
-  "keyList": [{
+  "keyList": [
+    {
       "text": "ctrl+c",
       "zhtext": "终结当前运行中的命令"
     },

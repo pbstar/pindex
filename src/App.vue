@@ -279,6 +279,74 @@ export default {
         } else {
           this.toPushAns(e, "not find", 0, true);
         }
+      } else if (this.type == 6) {
+        if (e.cmd) {
+          if (e.cmd == "cd..") this.toType0(e);
+        } else {
+          this.toPushAns(e, "", 0, false);
+          // let str =
+          //   "20220728001285904" + e.text + "pindex" + "ybpkoC_rhQ3fRABGkhXx";
+          // let sign = this.$unit.toMd5(str);
+          // this.$http
+          //   .get("api/fanyi.php", {
+          //     text: e.text,
+          //     from: "zh",
+          //     to: "en",
+          //     appid: "20220728001285904",
+          //     salt: "pindex",
+          //     sign: sign,
+          //   })
+          //   .then((res) => {
+          //     if (res.code == 200) {
+          //       if (this.list.length > 0 && this.isloading) {
+          //         if (res.data.text) {
+          //           this.list[this.list.length - 1].a = res.data.text;
+          //           this.isloading = false;
+          //         } else {
+          //           this.toPushAns(e, "not find", 0, true);
+          //         }
+          //       }
+          //     } else {
+          //       if (this.list.length > 0 && this.isloading) {
+          //         this.list[this.list.length - 1].a = "no find";
+          //         this.isloading = false;
+          //       }
+          //     }
+          //     this.$refs.p_add.tofocus();
+          //   });
+          const { Configuration, OpenAIApi } = require("openai");
+          const configuration = new Configuration({
+            apiKey: "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",
+          });
+          const openai = new OpenAIApi(configuration);
+          openai
+            .createCompletion({
+              model: "text-davinci-003",
+              prompt: e.text,
+              max_tokens: 600,
+              temperature: 0.5,
+            })
+            .then((res) => {
+              console.log(res);
+              if (res.status == 200) {
+                if (this.list.length > 0 && this.isloading) {
+                  if (res.data.choices && res.data.choices.length > 0) {
+                    this.list[this.list.length - 1].a =
+                      res.data.choices[0].text;
+                    this.isloading = false;
+                  } else {
+                    this.toPushAns(e, "not find", 0, true);
+                  }
+                }
+              } else {
+                if (this.list.length > 0 && this.isloading) {
+                  this.list[this.list.length - 1].a = "no find";
+                  this.isloading = false;
+                }
+              }
+              this.$refs.p_add.tofocus();
+            });
+        }
       }
     },
     toType0(e) {
@@ -362,38 +430,36 @@ export default {
           this.$refs.p_add.tofocus();
         });
     },
-    toGetMusic(e){
+    toGetMusic(e) {
       this.toPushAns(e, "", 0, false);
-      this.$http
-        .get("api/get_music.php")
-        .then((res) => {
-          if (res.code == 200) {
-            if (this.list.length > 0 && this.isloading) {
-              console.log(res.data);
-              // if (res.data.length > 0) {
-              //   this.list[this.list.length - 1].atype = 1;
-              //   let list = [];
-              //   for (let i = 0; i < res.data.length; i++) {
-              //     list.push({
-              //       text: res.data[i].keyword,
-              //       url: res.data[i].url,
-              //     });
-              //   }
-              //   this.list[this.list.length - 1].a = list;
-              //   this.isloading = false;
-              // } else {
-              //   this.toPushAns(e, "not find", 0, true);
-              // }
-            }
-          } else {
-            if (this.list.length > 0 && this.isloading) {
-              this.list[this.list.length - 1].a = "no find";
-              this.isloading = false;
-            }
+      this.$http.get("api/get_music.php").then((res) => {
+        if (res.code == 200) {
+          if (this.list.length > 0 && this.isloading) {
+            console.log(res.data);
+            // if (res.data.length > 0) {
+            //   this.list[this.list.length - 1].atype = 1;
+            //   let list = [];
+            //   for (let i = 0; i < res.data.length; i++) {
+            //     list.push({
+            //       text: res.data[i].keyword,
+            //       url: res.data[i].url,
+            //     });
+            //   }
+            //   this.list[this.list.length - 1].a = list;
+            //   this.isloading = false;
+            // } else {
+            //   this.toPushAns(e, "not find", 0, true);
+            // }
           }
-          this.$refs.p_add.tofocus();
-        });
-    }
+        } else {
+          if (this.list.length > 0 && this.isloading) {
+            this.list[this.list.length - 1].a = "no find";
+            this.isloading = false;
+          }
+        }
+        this.$refs.p_add.tofocus();
+      });
+    },
   },
 };
 </script>
