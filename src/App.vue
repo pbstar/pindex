@@ -284,36 +284,6 @@ export default {
           if (e.cmd == "cd..") this.toType0(e);
         } else {
           this.toPushAns(e, "", 0, false);
-          // let str =
-          //   "20220728001285904" + e.text + "pindex" + "ybpkoC_rhQ3fRABGkhXx";
-          // let sign = this.$unit.toMd5(str);
-          // this.$http
-          //   .get("api/fanyi.php", {
-          //     text: e.text,
-          //     from: "zh",
-          //     to: "en",
-          //     appid: "20220728001285904",
-          //     salt: "pindex",
-          //     sign: sign,
-          //   })
-          //   .then((res) => {
-          //     if (res.code == 200) {
-          //       if (this.list.length > 0 && this.isloading) {
-          //         if (res.data.text) {
-          //           this.list[this.list.length - 1].a = res.data.text;
-          //           this.isloading = false;
-          //         } else {
-          //           this.toPushAns(e, "not find", 0, true);
-          //         }
-          //       }
-          //     } else {
-          //       if (this.list.length > 0 && this.isloading) {
-          //         this.list[this.list.length - 1].a = "no find";
-          //         this.isloading = false;
-          //       }
-          //     }
-          //     this.$refs.p_add.tofocus();
-          //   });
           const { Configuration, OpenAIApi } = require("openai");
           const configuration = new Configuration({
             apiKey: "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",
